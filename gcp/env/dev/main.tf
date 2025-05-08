@@ -15,16 +15,23 @@ provider "google" {
   region                      = "asia-northeast1"
 #   impersonate_service_account = "nagisa-nasu@${var.project_name}.iam.gserviceaccount.com"
 }
+module "project" {
+  source = "../../modules/project"
+  project_id = var.project_id
+}
 
 module "service" {
   source = "../../modules/services"
+  project_id = var.project_id
+  project_name = var.project_name
 }
 
-# module "cloudbuild" {
-#   source     = "../../modules/cloudbuild"
-#   depends_on = [module.service]
-#   project_id = var.project_id
-# }
+module "cloudbuild" {
+  source     = "../../modules/cloudbuild"
+  depends_on = [module.service]
+  project_id = var.project_id
+  project_number = module.project.project_number
+}
 
 module "cloudrun" {
   source       = "../../modules/cloudrun"

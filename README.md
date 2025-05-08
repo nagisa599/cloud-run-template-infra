@@ -19,7 +19,7 @@ gsutil 5.34
 GCR の image をあらかじめ push しとくこと
 
 ```bash
-docker build -f ./Dockerfile -t asia-northeast1-docker.pkg.dev/manamu-kasyatter-dev/gateway/test_1 .
+$  docker buildx build --platform linux/amd64  -t asia-northeast1-docker.pkg.dev/manamu-kasyatter-dev/gateway/test_2 .
 
 
 gcloud auth configure-docker asia-northeast1-docker.pkg.dev
