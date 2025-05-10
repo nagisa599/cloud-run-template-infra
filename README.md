@@ -1,5 +1,7 @@
 # cloud-run-template-infra
 
+build チェック
+
 ## 前提条件
 
 ### gcloud コマンドが使えること
