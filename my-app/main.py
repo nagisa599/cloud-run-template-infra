@@ -6,7 +6,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "Hello from FastAPI on Cloud Run!"}
+    return {"message": "Hello2 from FastAPI on Cloud Run!"}
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
