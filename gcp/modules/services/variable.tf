@@ -12,6 +12,7 @@ variable "gcp_service_list" {
     "cloudbuild.googleapis.com",
     "containerregistry.googleapis.com",
     "run.googleapis.com",
-    "cloudresourcemanager.googleapis.com"
+    "cloudresourcemanager.googleapis.com",
+    "secretmanager.googleapis.com",
   ]
 }
