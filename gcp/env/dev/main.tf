@@ -31,6 +31,9 @@ module "cloudbuild" {
   depends_on = [module.service]
   project_id = var.project_id
   project_number = module.project.project_number
+  github_app_installation_id = var.github_app_installation_id
+  github_oauth_token_secret_version = var.github_oauth_token_secret_version
+  github_repository_remote_uri = var.github_repository_remote_uri
 }
 
 module "cloudrun" {
