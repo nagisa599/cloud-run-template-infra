@@ -30,3 +30,6 @@ substitutions:
   _ARTIFACT_REPOSITORY_IMAGE_NAME: by-terraform
 images:
   - "$_ARTIFACT_REPOSITORY_IMAGE_NAME:$SHORT_SHA"
+
+options:
+  logging: CLOUD_LOGGING_ONLY #サービスアカウントを指定するので、ログ保存先を制限

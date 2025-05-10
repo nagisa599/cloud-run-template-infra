@@ -86,4 +86,5 @@ resource "google_cloudbuild_trigger" "my-app_trigger" {
     _REGION                         = "asia-northeast1"
     _ARTIFACT_REPOSITORY_IMAGE_NAME = "asia-northeast1-docker.pkg.dev/${var.project_id}/gateway/test_2"
   }
+
 }
