@@ -36,6 +36,10 @@ module "cloudbuild" {
   github_repository_remote_uri      = var.github_repository_remote_uri
 }
 
+# ------------------------------------------
+# Cloud Runのサービスを作成するためのモジュール
+# 最初に実行するときは、コメントアウトして、GCRのイメージを作成してから、コメントアウトを外して実行する
+# ------------------------------------------
 module "cloudrun" {
   source       = "../../modules/cloudrun"
   depends_on   = [module.service]
