@@ -21,6 +21,7 @@ resource "google_project_iam_member" "act_as" {
   for_each = toset([
     "roles/run.developer",
     "roles/iam.serviceAccountUser",
+     "roles/logging.logWriter",
   ])
   project = var.project_id
   role    = each.key
