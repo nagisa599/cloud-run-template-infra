@@ -1,5 +1,6 @@
-
-
+# --------------------------------------
+# Cloud Runのサービスを作成するためのモジュール
+# --------------------------------------
 resource "google_cloud_run_service" "configure_cloud_run_service" {
   name                       = "sample-api-cloud-run" # Cloud Runのサービス名
   location                   = "asia-northeast1" # Cloud Runのリージョン
@@ -46,6 +47,9 @@ resource "google_cloud_run_service" "configure_cloud_run_service" {
     ]
   }
 }
+# --------------------------------------
+# Cloud Runにアクセスできるユーザの制限
+# --------------------------------------
 resource "google_cloud_run_service_iam_member" "user_access" {
   location = google_cloud_run_service.configure_cloud_run_service.location
   project  = var.project_id
@@ -54,3 +58,4 @@ resource "google_cloud_run_service_iam_member" "user_access" {
   role   = "roles/run.invoker"
   member = "user:nagisa_nasu@manamu.jp"
 }
+
