@@ -4,6 +4,7 @@ resource "google_project_iam_member" "cloudbuild_iam" {
     "roles/run.developer",
     "roles/iam.serviceAccountUser",
     "roles/secretmanager.secretAccessor",
+    "roles/logging.logWriter"
   ])
   role    = each.key
   member  = "serviceAccount:${var.project_number}@cloudbuild.gserviceaccount.com"
@@ -20,7 +21,6 @@ resource "google_project_iam_member" "act_as" {
   for_each = toset([
     "roles/run.developer",
     "roles/iam.serviceAccountUser",
-    "roles/logging.logWriter"
   ])
   project = var.project_id
   role    = each.key
