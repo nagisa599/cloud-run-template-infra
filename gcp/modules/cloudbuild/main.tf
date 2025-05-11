@@ -1,22 +1,11 @@
-
-# resource "google_project_iam_member" "cloudbuild_iam" {
-#   for_each = toset([
-#     "roles/run.developer",
-#     "roles/iam.serviceAccountUser",
-#     "roles/secretmanager.secretAccessor",
-#     "roles/logging.logWriter"
-#   ])
-#   role    = each.key
-#   member  = "serviceAccount:${var.project_number}@cloudbuild.gserviceaccount.com"
-#   project = var.project_id
-  
-# }
+# -----------------------------------------
+# cloud-buildを実行するためのサービスアカウント
+# -----------------------------------------
 resource "google_service_account" "cloudbuild_service_account" {
   account_id   = "cloudbuild-sa"
   display_name = "cloudbuild-sa"
   description  = "Cloud build service account"
 }
-
 resource "google_project_iam_member" "act_as" {
   for_each = toset([
     "roles/run.developer",
@@ -29,6 +18,9 @@ resource "google_project_iam_member" "act_as" {
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
+# -----------------------------------------
+# Cloud Build が GitHub 連携時に Secret Manager のトークンを読むために、内部的に使う「マネージドサービスアカウント」
+# -----------------------------------------
 resource "google_project_iam_member" "cloudbuild_managed_sa_secret_access" {
   for_each = toset([
     "roles/secretmanager.secretAccessor",
@@ -38,11 +30,13 @@ resource "google_project_iam_member" "cloudbuild_managed_sa_secret_access" {
   project = var.project_id
 }
 
+# -----------------------------------------
+# githubのトークンをSecret Managerに格納
+# -----------------------------------------
 resource "google_secret_manager_secret" "github_token" {
   secret_id  = "github-token"
-
   replication {
-user_managed {
+    user_managed {
       replicas {
         location = "asia-northeast1"
       }
@@ -50,18 +44,24 @@ user_managed {
   }
 }
 
-
-
+# ------------------------------------------
+# githubのトークンを実際に格納
+# ------------------------------------------
 resource "google_secret_manager_secret_version" "github_token_version" {
   secret      = google_secret_manager_secret.github_token.id
   secret_data = var.github_oauth_token_secret_version
 }
-
+# ------------------------------------------
+# githubのトークンをSecret Managerから取得
+# ------------------------------------------
 data "google_secret_manager_secret_version" "github_token_secret_version" {
   secret  = google_secret_manager_secret.github_token.secret_id
   project = var.project_id
 }
 
+# ------------------------------------------
+# githubとの連携を行うための接続情報
+# ------------------------------------------
 resource "google_cloudbuildv2_connection" "github_connection" {
   location = "us-central1"
   name = "github-connection"
@@ -74,12 +74,18 @@ resource "google_cloudbuildv2_connection" "github_connection" {
   }
 }
 
+# ------------------------------------------
+# githubのリポジトリ情報
+# ------------------------------------------
 resource "google_cloudbuildv2_repository" "github_repository" {
   name = "github-repository"
   parent_connection = google_cloudbuildv2_connection.github_connection.id
   remote_uri = var.github_repository_remote_uri
 }
 
+# ------------------------------------------
+# Cloud Buildのトリガーを作成
+# ------------------------------------------
 resource "google_cloudbuild_trigger" "my-app_trigger" {
   location = "us-central1"
   project = var.project_id
@@ -91,7 +97,6 @@ resource "google_cloudbuild_trigger" "my-app_trigger" {
     }
   }
   filename = "my-app/cloudbuild.yaml"
-
   substitutions = {
     _REGION                         = "asia-northeast1"
     _ARTIFACT_REPOSITORY_IMAGE_NAME = "asia-northeast1-docker.pkg.dev/${var.project_id}/gateway/test_2"
