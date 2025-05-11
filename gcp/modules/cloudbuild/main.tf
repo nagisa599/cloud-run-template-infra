@@ -1,16 +1,16 @@
 
-resource "google_project_iam_member" "cloudbuild_iam" {
-  for_each = toset([
-    "roles/run.developer",
-    "roles/iam.serviceAccountUser",
-    "roles/secretmanager.secretAccessor",
-    "roles/logging.logWriter"
-  ])
-  role    = each.key
-  member  = "serviceAccount:${var.project_number}@cloudbuild.gserviceaccount.com"
-  project = var.project_id
+# resource "google_project_iam_member" "cloudbuild_iam" {
+#   for_each = toset([
+#     "roles/run.developer",
+#     "roles/iam.serviceAccountUser",
+#     "roles/secretmanager.secretAccessor",
+#     "roles/logging.logWriter"
+#   ])
+#   role    = each.key
+#   member  = "serviceAccount:${var.project_number}@cloudbuild.gserviceaccount.com"
+#   project = var.project_id
   
-}
+# }
 resource "google_service_account" "cloudbuild_service_account" {
   account_id   = "cloudbuild-sa"
   display_name = "cloudbuild-sa"
@@ -21,7 +21,7 @@ resource "google_project_iam_member" "act_as" {
   for_each = toset([
     "roles/run.developer",
     "roles/iam.serviceAccountUser",
-     "roles/logging.logWriter",
+    "roles/logging.logWriter",
     "roles/artifactregistry.writer"
   ])
   project = var.project_id
