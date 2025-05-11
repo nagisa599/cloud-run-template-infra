@@ -29,7 +29,11 @@ resource "google_project_iam_member" "act_as" {
 }
 
 resource "google_project_iam_member" "cloudbuild_managed_sa_secret_access" {
-  role    = "roles/secretmanager.secretAccessor"
+  for_each = toset([
+    "roles/secretmanager.secretAccessor",
+    "roles/logging.logWriter",
+  ])
+  role    =each.key
   member  = "serviceAccount:service-${var.project_number}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
   project = var.project_id
 }

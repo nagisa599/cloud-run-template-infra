@@ -6,34 +6,34 @@ terraform {
     }
   }
   required_version = ">= 1.3"
-#   backend "gcs" {}
+  #   backend "gcs" {}
 }
 
 
 provider "google" {
-  project                     = var.project_id
-  region                      = "asia-northeast1"
-#   impersonate_service_account = "nagisa-nasu@${var.project_name}.iam.gserviceaccount.com"
+  project = var.project_id
+  region  = "asia-northeast1"
+  #   impersonate_service_account = "nagisa-nasu@${var.project_name}.iam.gserviceaccount.com"
 }
 module "project" {
-  source = "../../modules/project"
+  source     = "../../modules/project"
   project_id = var.project_id
 }
 
 module "service" {
-  source = "../../modules/services"
-  project_id = var.project_id
+  source       = "../../modules/services"
+  project_id   = var.project_id
   project_name = var.project_name
 }
 
 module "cloudbuild" {
-  source     = "../../modules/cloudbuild"
-  depends_on = [module.service]
-  project_id = var.project_id
-  project_number = module.project.project_number
-  github_app_installation_id = var.github_app_installation_id
+  source                            = "../../modules/cloudbuild"
+  depends_on                        = [module.service]
+  project_id                        = var.project_id
+  project_number                    = module.project.project_number
+  github_app_installation_id        = var.github_app_installation_id
   github_oauth_token_secret_version = var.github_oauth_token_secret_version
-  github_repository_remote_uri = var.github_repository_remote_uri
+  github_repository_remote_uri      = var.github_repository_remote_uri
 }
 
 module "cloudrun" {
@@ -43,7 +43,7 @@ module "cloudrun" {
   project_name = var.project_name
 }
 module "gar" {
-  source       = "../../modules/gar"
-  depends_on   = [module.service]
+  source     = "../../modules/gar"
+  depends_on = [module.service]
   project_id = var.project_id
 }

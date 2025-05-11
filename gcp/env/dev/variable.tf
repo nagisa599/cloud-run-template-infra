@@ -18,5 +18,5 @@ variable "github_oauth_token_secret_version" {
 variable "github_repository_remote_uri" {
   description = "GitHub repository remote URI"
   type        = string
-  
+
 }
