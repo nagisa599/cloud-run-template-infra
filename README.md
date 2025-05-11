@@ -1,6 +1,6 @@
 # cloud-run-template-infra
 
-build チェック 2git f
+build チェック
 
 ## 前提条件
 
