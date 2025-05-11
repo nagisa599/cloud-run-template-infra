@@ -22,7 +22,7 @@ resource "google_project_iam_member" "act_as" {
     "roles/run.developer",
     "roles/iam.serviceAccountUser",
      "roles/logging.logWriter",
-    #  "roles/artifactregistry.writer"
+    "roles/artifactregistry.writer"
   ])
   project = var.project_id
   role    = each.key
