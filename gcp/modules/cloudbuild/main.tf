@@ -53,7 +53,7 @@ data "google_secret_manager_secret_version" "github_token_secret_version" {
 }
 
 resource "google_cloudbuildv2_connection" "github_connection" {
-  location = "asia-northeast1"
+  location = "us-central1"
   name = "github-connection"
 
   github_config {
@@ -71,7 +71,7 @@ resource "google_cloudbuildv2_repository" "github_repository" {
 }
 
 resource "google_cloudbuild_trigger" "my-app_trigger" {
-  location = "asia-northeast1"
+  location = "us-central1"
   project = var.project_id
   service_account = google_service_account.cloudbuild_service_account.id
   repository_event_config {
