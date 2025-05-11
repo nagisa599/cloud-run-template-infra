@@ -17,8 +17,13 @@ resource "google_service_account" "cloudbuild_service_account" {
 }
 
 resource "google_project_iam_member" "act_as" {
+  for_each = toset([
+    "roles/run.developer",
+    "roles/iam.serviceAccountUser",
+    "roles/logging.logWriter"
+  ])
   project = var.project_id
-  role    = "roles/iam.serviceAccountUser"
+  role    = each.key
   member  = "serviceAccount:${google_service_account.cloudbuild_service_account.email}"
 }
 
