@@ -32,6 +32,7 @@ resource "google_project_iam_member" "cloudbuild_managed_sa_secret_access" {
   for_each = toset([
     "roles/secretmanager.secretAccessor",
     "roles/logging.logWriter",
+    "roles/artifactregistry.writer",
   ])
   role    =each.key
   member  = "serviceAccount:service-${var.project_number}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
